@@ -12,10 +12,10 @@ export interface HomeContextProps {
   state: HomeInitialState;
   dispatch: Dispatch<ActionType<HomeInitialState>>;
   handleNewConversation: () => void;
-  onGlobal:()=>void;
-  offGlobal:()=>void;
-  onPluginSelect:()=>void;
-  offPluginSelect:()=>void;
+  onGlobal: () => void;
+  offGlobal: () => void;
+  onPluginSelect: () => void;
+  offPluginSelect: () => void;
   handleCreateFolder: (name: string, type: FolderType) => void;
   handleDeleteFolder: (folderId: string) => void;
   handleUpdateFolder: (folderId: string, name: string) => void;
