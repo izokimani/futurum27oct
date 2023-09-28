@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
-import axios from 'axios';
+
 import { GetServerSideProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -28,6 +28,8 @@ import { getSettings } from '@/utils/app/settings';
 import { Conversation } from '@/types/chat';
 import { KeyValuePair } from '@/types/data';
 import { FolderInterface, FolderType } from '@/types/folder';
+import { GlobalFolderInterface } from '@/types/globalFolder';
+import { GlobalPrompt } from '@/types/globalPrompt';
 import { OpenAIModelID, OpenAIModels, fallbackModelID } from '@/types/openai';
 import { Prompt } from '@/types/prompt';
 
@@ -39,9 +41,8 @@ import Promptbar from '@/components/Promptbar';
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
 
+import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { GlobalPrompt } from '@/types/globalPrompt';
-import { GlobalFolderInterface } from '@/types/globalFolder';
 
 interface Props {
   serverSideApiKeyIsSet: boolean;
@@ -72,7 +73,7 @@ const Home = ({
       selectedConversation,
       prompts,
       temperature,
-      isAutoHide
+      isAutoHide,
     },
     dispatch,
   } = contextValue;
@@ -143,7 +144,9 @@ const Home = ({
 
     //   return c;
     // });
-    const updatedConversations=conversations.filter(c=>c.folderId!=folderId)
+    const updatedConversations = conversations.filter(
+      (c) => c.folderId != folderId,
+    );
 
     dispatch({ field: 'conversations', value: updatedConversations });
     saveConversations(updatedConversations);
@@ -159,9 +162,9 @@ const Home = ({
     //   return p;
     // });
 
-    const updatedPrompts=prompts.filter(p=>p.folderId!=folderId)
+    const updatedPrompts = prompts.filter((p) => p.folderId != folderId);
     dispatch({ field: 'prompts', value: updatedPrompts });
-    alert("Folder delete successfully.")
+    alert('Folder delete successfully.');
     savePrompts(updatedPrompts);
   };
 
@@ -213,19 +216,18 @@ const Home = ({
     dispatch({ field: 'loading', value: false });
   };
 
-  const onGlobal=()=>{
-    dispatch({ field: 'isGlobal', value:true });
-  }
-  const onPluginSelect=()=>{
-    dispatch({ field: 'showPluginSelect', value:true });
-  }
-  const offPluginSelect=()=>{
-    dispatch({ field: 'showPluginSelect', value:false });
-  }
- const offGlobal=()=>{
-  dispatch({ field: 'isGlobal', value:false });
-
- }
+  const onGlobal = () => {
+    dispatch({ field: 'isGlobal', value: true });
+  };
+  const onPluginSelect = () => {
+    dispatch({ field: 'showPluginSelect', value: true });
+  };
+  const offPluginSelect = () => {
+    dispatch({ field: 'showPluginSelect', value: false });
+  };
+  const offGlobal = () => {
+    dispatch({ field: 'isGlobal', value: false });
+  };
 
   const handleUpdateConversation = (
     conversation: Conversation,
@@ -269,115 +271,142 @@ const Home = ({
   }, [defaultModelId, serverSideApiKeyIsSet, serverSidePluginKeysSet]);
 
   // ON LOAD --------------------------------------------
-  function test2(){
+  function test2() {
     const config = {
       method: 'get',
       url: `https://chat.futurum.one/.netlify/functions/getFolders`,
     };
-    return axios(config).then(response => {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(response.data)
-      }
-    }).catch(error => {
-     // console.log(error)
-      return {
-        statusCode: 422,
-        body: `Error: ${error}`,
-      }
-    })
+    return axios(config)
+      .then((response) => {
+        return {
+          statusCode: 200,
+          body: JSON.stringify(response.data),
+        };
+      })
+      .catch((error) => {
+        // console.log(error)
+        return {
+          statusCode: 422,
+          body: `Error: ${error}`,
+        };
+      });
   }
-  function test(){
+  function test() {
     const config = {
       method: 'get',
       url: `https://chat.futurum.one/.netlify/functions/getPrompts`,
     };
-    return axios(config).then(response => {
-      return {
-        statusCode: 200,
-        body: JSON.stringify(response.data)
-      }
-    }).catch(error => {
-      //console.log(error)
-      return {
-        statusCode: 422,
-        body: `Error: ${error}`,
-      }
-    })
-  }
-
-  const setColors=()=>{
-    const storedColors=localStorage.getItem('folderColors');
-    if(storedColors){
-      dispatch({ field: 'folderColors', value: JSON.parse(storedColors) });
-    }
-    else{
-      dispatch({ field: 'folderColors', value: [] });
-      localStorage.setItem('folderColors',JSON.stringify([]))
-    }
-
-  }
-  const getGlobalTemplatesFromDb=async()=>{
-   // const response=await test();
-   const controller = new AbortController();
-   const response = await fetch('/api/getPrompts', {
-     method: 'GET',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-     signal: controller.signal,
-     
-   });
-       const result=await response.json();
-       result.sort((a:GlobalPrompt, b:GlobalPrompt) => {
-        const downloadCountA = a.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
-        const downloadCountB = b.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
-      
-        return downloadCountA - downloadCountB;
+    return axios(config)
+      .then((response) => {
+        return {
+          statusCode: 200,
+          body: JSON.stringify(response.data),
+        };
+      })
+      .catch((error) => {
+        //console.log(error)
+        return {
+          statusCode: 422,
+          body: `Error: ${error}`,
+        };
       });
-            localStorage.setItem('globalPrompts',JSON.stringify(result));
-      dispatch({ field: 'globalPrompts', value: result });
-    
   }
-  const getGlobalFoldersFromDb=async()=>{
+
+  const setColors = () => {
+    const storedColors = localStorage.getItem('folderColors');
+    if (storedColors) {
+      dispatch({ field: 'folderColors', value: JSON.parse(storedColors) });
+    } else {
+      dispatch({ field: 'folderColors', value: [] });
+      localStorage.setItem('folderColors', JSON.stringify([]));
+    }
+  };
+  const getGlobalTemplatesFromDb = async () => {
+    // const response=await test();
+    const controller = new AbortController();
+    const response = await fetch('/api/getPrompts', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+    });
+    const result = await response.json();
+    result.sort((a: GlobalPrompt, b: GlobalPrompt) => {
+      const downloadCountA = a.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
+      const downloadCountB = b.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
+
+      return downloadCountA - downloadCountB;
+    });
+    localStorage.setItem('globalPrompts', JSON.stringify(result));
+    dispatch({ field: 'globalPrompts', value: result });
+  };
+  const getGlobalFoldersFromDb = async () => {
     //const response=await test2();
     const controller = new AbortController();
-   const response = await fetch('/api/getFolders', {
-     method: 'GET',
-     headers: {
-       'Content-Type': 'application/json',
-     },
-     signal: controller.signal,
-     
-   });
-       const result=await response.json();
-       localStorage.setItem('globalFolders',JSON.stringify(result));
-      dispatch({ field: 'globalFolders', value: result });
-    
-  }
-  
-  const checkAutoHideSidebar=()=>{
-    let storedValue=localStorage.getItem('isAutoHide')
-    if(storedValue){
-      dispatch({ field: 'isAutoHide', value: JSON.parse(storedValue) });
-    }
-    else{
-      localStorage.setItem('isAutoHide',JSON.stringify(isAutoHide))
-    }
-  }
-
-  const myTest=async()=>{
+    const response = await fetch('/api/getFolders', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+    });
+    const result = await response.json();
+    localStorage.setItem('globalFolders', JSON.stringify(result));
+    dispatch({ field: 'globalFolders', value: result });
+    dispatch({ field: 'finalGlobalFolder', value: result });
+  };
+  //awais
+  const getGlobalFoldersFromDbByDate = async () => {
+    //const response=await test2();
     const controller = new AbortController();
-        const response = await fetch('/api/getPrompts', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          signal: controller.signal,
-          
-        });
-        // console.log(await response.json())
-  }
+    const response = await fetch('/api/getGlobeFolderByDate', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+    });
+    const result = await response.json();
+    localStorage.setItem('globalFoldersByDate', JSON.stringify(result));
+    dispatch({ field: 'globalFolderByDate', value: result });
+  };
+
+  const getGlobalTemplateFromDbByDate = async () => {
+    //const response=await test2();
+    const controller = new AbortController();
+    const response = await fetch('/api/getGlobalTemplatesByDate', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+    });
+    const result = await response.json();
+    localStorage.setItem('globalTemplateByDate', JSON.stringify(result));
+    dispatch({ field: 'globalPromptByDate', value: result });
+  };
+
+  const checkAutoHideSidebar = () => {
+    let storedValue = localStorage.getItem('isAutoHide');
+    if (storedValue) {
+      dispatch({ field: 'isAutoHide', value: JSON.parse(storedValue) });
+    } else {
+      localStorage.setItem('isAutoHide', JSON.stringify(isAutoHide));
+    }
+  };
+
+  const myTest = async () => {
+    const controller = new AbortController();
+    const response = await fetch('/api/getPrompts', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+    });
+    // console.log(await response.json())
+  };
   useEffect(() => {
     const settings = getSettings();
     if (settings.theme) {
@@ -430,10 +459,12 @@ const Home = ({
       dispatch({ field: 'prompts', value: JSON.parse(prompts) });
     }
     // myTest()
-    getGlobalTemplatesFromDb()
-    getGlobalFoldersFromDb()
-    setColors()
-    checkAutoHideSidebar()
+    getGlobalTemplatesFromDb();
+    getGlobalTemplateFromDbByDate();
+    getGlobalFoldersFromDbByDate();
+    getGlobalFoldersFromDb();
+    setColors();
+    checkAutoHideSidebar();
     const conversationHistory = localStorage.getItem('conversationHistory');
     if (conversationHistory) {
       const parsedConversationHistory: Conversation[] =
@@ -477,7 +508,6 @@ const Home = ({
     dispatch,
     serverSideApiKeyIsSet,
     serverSidePluginKeysSet,
-  
   ]);
 
   return (

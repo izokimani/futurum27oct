@@ -26,15 +26,31 @@ const Promptbar = () => {
   const promptBarContextValue = useCreateReducer<PromptbarInitialState>({
     initialState,
   });
-  
+
   const {
-    state: { prompts, defaultModelId, showPromptbar, globalPrompts, isGlobal },
+    state: {
+      prompts,
+      defaultModelId,
+      showPromptbar,
+      globalPrompts,
+      isGlobal,
+      globalFolders,
+      globalFolderByDate,
+      globalPromptByDate,
+      finalGlobalFolder,
+    },
     dispatch: homeDispatch,
     handleCreateFolder,
   } = useContext(HomeContext);
 
   const {
-    state: { searchTerm, filteredPrompts,filteredGlobalPrompts },
+    state: {
+      searchTerm,
+      filteredPrompts,
+      filteredGlobalPrompts,
+      fillerSearchTerm,
+      filterOption,
+    },
     dispatch: promptDispatch,
   } = promptBarContextValue;
   const handleTogglePromptbar = () => {
@@ -65,7 +81,7 @@ const Promptbar = () => {
     const updatedPrompts = prompts.filter((p) => p.id !== prompt.id);
 
     homeDispatch({ field: 'prompts', value: updatedPrompts });
-    alert("Prompt delete successfully.")
+    alert('Prompt delete successfully.');
     savePrompts(updatedPrompts);
   };
 
@@ -92,45 +108,54 @@ const Promptbar = () => {
       };
 
       handleUpdatePrompt(updatedPrompt);
-
       e.target.style.background = 'none';
     }
   };
 
   useEffect(() => {
     if (searchTerm) {
-      if(!isGlobal)
-      promptDispatch({
-        field: 'filteredPrompts',
-        value: prompts.filter((prompt) => {
-          const searchable =prompt.name.toLowerCase() 
-          //+
-            // ' ' +
-            // prompt.description.toLowerCase() +
-            // ' ' +
-            // prompt.content.toLowerCase();
-          return searchable.includes(searchTerm.toLowerCase());
-        }),
-      });
+      // console.log(searchTerm);
+      if (!isGlobal)
+        promptDispatch({
+          field: 'filteredPrompts',
+          value: prompts.filter((prompt) => {
+            const searchable = prompt.name.toLowerCase();
+            return searchable.includes(searchTerm.toLowerCase());
+          }),
+        });
       else
-      promptDispatch({
-        field: 'filteredGlobalPrompts',
-        value: prompts.filter((prompt) => {
-          const searchable =prompt.name.toLowerCase() 
-          //+
-            // ' ' +
-            // prompt.description.toLowerCase() +
-            // ' ' +
-            // prompt.content.toLowerCase();
-          return searchable.includes(searchTerm.toLowerCase());
-        }),
-      });
+        promptDispatch({
+          field: 'filteredGlobalPrompts',
+          value: globalPrompts.filter((prompt) => {
+            const searchable = prompt.name.toLowerCase();
+            return searchable.includes(searchTerm.toLowerCase());
+          }),
+        });
     } else {
       promptDispatch({ field: 'filteredPrompts', value: prompts });
       promptDispatch({ field: 'filteredGlobalPrompts', value: globalPrompts });
-
     }
   }, [searchTerm, prompts, globalPrompts]);
+
+  useEffect(() => {
+    if (fillerSearchTerm) {
+      if (filterOption === 'created date') {
+        homeDispatch({ field: 'globalFolders', value: globalFolderByDate });
+      } else {
+        homeDispatch({ field: 'globalFolders', value: finalGlobalFolder });
+      }
+      promptDispatch({
+        field: 'filteredGlobalPrompts',
+        value: globalPrompts.filter((prompt) => {
+          const searchable = prompt.name.toLowerCase();
+          return searchable.includes(fillerSearchTerm.toLowerCase());
+        }),
+      });
+    } else {
+      homeDispatch({ field: 'globalFolders', value: finalGlobalFolder });
+      promptDispatch({ field: 'filteredGlobalPrompts', value: globalPrompts });
+    }
+  }, [fillerSearchTerm]);
 
   return (
     <PromptbarContext.Provider
@@ -152,16 +177,27 @@ const Promptbar = () => {
         }
         globalItemComponent={
           <Prompts
-          prompts={filteredGlobalPrompts.filter((prompt)=>!prompt.folderId)}/>
+            prompts={filteredGlobalPrompts.filter((prompt) => !prompt.folderId)}
+          />
         }
         folderComponent={<PromptFolders />}
-        globalFolderComponent={<PromptFolders/>}
+        globalFolderComponent={<PromptFolders />}
         items={filteredPrompts}
         globalItems={globalPrompts}
         searchTerm={searchTerm}
-        handleSearchTerm={(searchTerm: string) =>
-          promptDispatch({ field: 'searchTerm', value: searchTerm })
-        }
+        handleSearchTerm={(searchTerm: string) => {
+          promptDispatch({ field: 'searchTerm', value: searchTerm });
+        }}
+        handleFilter={(searchTerm: string, option: string) => {
+          promptDispatch({
+            field: 'filterOption',
+            value: option,
+          });
+          promptDispatch({
+            field: 'fillerSearchTerm',
+            value: searchTerm,
+          });
+        }}
         toggleOpen={handleTogglePromptbar}
         handleCreateItem={handleCreatePrompt}
         handleCreateFolder={() => handleCreateFolder(t('New folder'), 'prompt')}

@@ -3,11 +3,15 @@ import { Prompt } from '@/types/prompt';
 export interface PromptbarInitialState {
   searchTerm: string;
   filteredPrompts: Prompt[];
-  filteredGlobalPrompts:Prompt[];
+  filteredGlobalPrompts: Prompt[];
+  fillerSearchTerm: string;
+  filterOption: string;
 }
 
 export const initialState: PromptbarInitialState = {
   searchTerm: '',
   filteredPrompts: [],
-  filteredGlobalPrompts:[]
+  filteredGlobalPrompts: [],
+  fillerSearchTerm: '',
+  filterOption: 'most downloded',
 };
