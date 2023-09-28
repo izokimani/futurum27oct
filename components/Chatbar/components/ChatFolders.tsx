@@ -52,6 +52,7 @@ export const ChatFolders = ({ searchTerm }: Props) => {
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((folder, index) => (
           <Folder
+          filterSearchTerm={''}
             key={index}
             searchTerm={searchTerm}
             currentFolder={folder}
