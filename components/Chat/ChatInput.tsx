@@ -388,7 +388,7 @@ const defaultOption = options[0];
             placeholder={
               t('Type a message or type "/" to select a prompt...') || ''
             }
-            value={content}
+            value={filteredPrompts[activePromptIndex].content}
             rows={1}
             onCompositionStart={() => setIsTyping(true)}
             onCompositionEnd={() => setIsTyping(false)}
