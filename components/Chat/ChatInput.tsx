@@ -266,6 +266,20 @@ export const ChatInput = ({
     if (window.innerWidth < 640 && textareaRef && textareaRef.current) {
       textareaRef.current.blur();
     }
+
+
+
+
+    const selectedPrompt = filteredPrompts[activePromptIndex];
+    if (selectedPrompt) {
+      setContent((prevContent) => {
+        const newContent = prevContent?.replace(
+          /\/\w*$/,
+          selectedPrompt.content,
+        );
+        return newContent;
+      });
+    }
   };
 
   useEffect(() => {
@@ -388,7 +402,7 @@ const defaultOption = options[0];
             placeholder={
               t('Type a message or type "/" to select a prompt...') || ''
             }
-            value={filteredPrompts[activePromptIndex].content}
+            value={content}
             rows={1}
             onCompositionStart={() => setIsTyping(true)}
             onCompositionEnd={() => setIsTyping(false)}

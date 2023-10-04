@@ -33,10 +33,10 @@ export const PromptList: FC<Props> = ({
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            onMouseOver(index)
+          //  onMouseOver(index)
             onSelect();
           }}
-         // onMouseEnter={() => onMouseOver(index)}
+          onMouseEnter={() => onMouseOver(index)}
         >
           {prompt.name}
         </li>
