@@ -5,7 +5,7 @@ import { Prompt } from '@/types/prompt';
 interface Props {
   prompts: Prompt[];
   activePromptIndex: number;
-  onSelect: () => void;
+  onSelect: (index:number) => void;
   onMouseOver: (index: number) => void;
   promptListRef: MutableRefObject<HTMLUListElement | null>;
 }
@@ -33,10 +33,10 @@ export const PromptList: FC<Props> = ({
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-          //  onMouseOver(index)
-            onSelect();
+            onMouseOver(index)
+            onSelect(index);
           }}
-          onMouseEnter={() => onMouseOver(index)}
+          //onMouseEnter={() => onMouseOver(index)}
         >
           {prompt.name}
         </li>
