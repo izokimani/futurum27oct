@@ -449,7 +449,23 @@ const defaultOption = options[0];
               <PromptList
                 activePromptIndex={activePromptIndex}
                 prompts={filteredPrompts}
-                onSelect={handleInitModal}
+              //  onSelect={handleInitModal}
+              onSelect={(index)=>{
+                const selectedPrompt = filteredPrompts[index];
+    if (selectedPrompt) {
+      setContent((prevContent) => {
+        const newContent = prevContent?.replace(
+          /\/\w*$/,
+          selectedPrompt.content,
+        );
+        return newContent;
+      });
+      handlePromptSelect(selectedPrompt);
+    }
+    setShowPromptList(false);
+
+    
+              }}
                 onMouseOver={(index)=>{
                   setActivePromptIndex(index)
                 }}
