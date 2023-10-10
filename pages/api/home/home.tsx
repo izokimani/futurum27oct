@@ -357,35 +357,35 @@ const Home = ({
     dispatch({ field: 'finalGlobalFolder', value: result });
   };
   //awais
-  const getGlobalFoldersFromDbByDate = async () => {
-    //const response=await test2();
-    const controller = new AbortController();
-    const response = await fetch('/api/getGlobeFolderByDate', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: controller.signal,
-    });
-    const result = await response.json();
-    localStorage.setItem('globalFoldersByDate', JSON.stringify(result));
-    dispatch({ field: 'globalFolderByDate', value: result });
-  };
+  // const getGlobalFoldersFromDbByDate = async () => {
+  //   //const response=await test2();
+  //   const controller = new AbortController();
+  //   const response = await fetch('/api/getGlobeFolderByDate', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     signal: controller.signal,
+  //   });
+  //   const result = await response.json();
+  //   localStorage.setItem('globalFoldersByDate', JSON.stringify(result));
+  //   dispatch({ field: 'globalFolderByDate', value: result });
+  // };
 
-  const getGlobalTemplateFromDbByDate = async () => {
-    //const response=await test2();
-    const controller = new AbortController();
-    const response = await fetch('/api/getGlobalTemplatesByDate', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      signal: controller.signal,
-    });
-    const result = await response.json();
-    localStorage.setItem('globalTemplateByDate', JSON.stringify(result));
-    dispatch({ field: 'globalPromptByDate', value: result });
-  };
+  // const getGlobalTemplateFromDbByDate = async () => {
+  //   //const response=await test2();
+  //   const controller = new AbortController();
+  //   const response = await fetch('/api/getGlobalTemplatesByDate', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     signal: controller.signal,
+  //   });
+  //   const result = await response.json();
+  //   localStorage.setItem('globalTemplateByDate', JSON.stringify(result));
+  //   dispatch({ field: 'globalPromptByDate', value: result });
+  // };
 
   const checkAutoHideSidebar = () => {
     let storedValue = localStorage.getItem('isAutoHide');
@@ -460,8 +460,14 @@ const Home = ({
     }
     // myTest()
     getGlobalTemplatesFromDb();
-    getGlobalTemplateFromDbByDate();
-    getGlobalFoldersFromDbByDate();
+    //getGlobalTemplateFromDbByDate();
+    //getGlobalFoldersFromDbByDate();
+    if(localStorage.getItem('globalTemplatesByDate')) {
+      localStorage.removeItem('globalTemplatesByDate');
+  }
+  if(localStorage.getItem('globalFoldersByDate')) {
+    localStorage.removeItem('globalFoldersByDate');
+}
     getGlobalFoldersFromDb();
     setColors();
     checkAutoHideSidebar();

@@ -441,7 +441,7 @@ const Sidebar = <T,>({
           onSearch={handleSearchTerm}
           lightMode={lightMode}
         />
-        {side === 'right' && isGlobal ? (
+        {/* {side === 'right' && isGlobal ? (
           <div className="p-1 flex justify-between">
             <div>
               <div className="relative">
@@ -532,7 +532,7 @@ const Sidebar = <T,>({
           </div>
         ) : (
           ''
-        )}
+        )} */}
 
         <div className="flex-grow overflow-auto">
           {side == 'right' && isGlobal && globalItems?.length > 0 && (

@@ -37,8 +37,6 @@ export interface HomeInitialState {
   defaultModelId: OpenAIModelID | undefined;
   serverSideApiKeyIsSet: boolean;
   serverSidePluginKeysSet: boolean;
-  globalPromptByDate: [];
-  globalFolderByDate: [];
   finalGlobalFolder: [];
 }
 
@@ -62,8 +60,6 @@ export const initialState: HomeInitialState = {
   prompts: [],
   globalPrompts: [],
   filteredGlobalPrompts: [],
-  globalPromptByDate: [],
-  globalFolderByDate: [],
   finalGlobalFolder: [],
   temperature: 1,
   showPromptbar: false,

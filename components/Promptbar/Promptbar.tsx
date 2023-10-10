@@ -35,8 +35,6 @@ const Promptbar = () => {
       globalPrompts,
       isGlobal,
       globalFolders,
-      globalFolderByDate,
-      globalPromptByDate,
       finalGlobalFolder,
     },
     dispatch: homeDispatch,
@@ -140,7 +138,7 @@ const Promptbar = () => {
   useEffect(() => {
     if (fillerSearchTerm) {
       if (filterOption === 'created date') {
-        homeDispatch({ field: 'globalFolders', value: globalFolderByDate });
+        // homeDispatch({ field: 'globalFolders', value: globalFolderByDate });
       } else {
         homeDispatch({ field: 'globalFolders', value: finalGlobalFolder });
       }
