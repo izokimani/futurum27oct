@@ -465,6 +465,9 @@ const Home = ({
     if(localStorage.getItem('globalTemplatesByDate')) {
       localStorage.removeItem('globalTemplatesByDate');
   }
+  if(localStorage.getItem('globalTemplateByDate')) {
+    localStorage.removeItem('globalTemplateByDate');
+}
   if(localStorage.getItem('globalFoldersByDate')) {
     localStorage.removeItem('globalFoldersByDate');
 }
