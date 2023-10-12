@@ -26,7 +26,7 @@ function App({ Component, pageProps }: AppProps<{}>) {
     </div>
     </AuthContextProvider>
     </ClerkProvider>
-    <Script src="//code.tidio.co/shqay9dyzehoqprjvcmzj0veozd4gfy8.js" />
+    <Script src="//code.tidio.co/shqay9dyzehoqprjvcmzj0veozd4gfy8.js" strategy='beforeInteractive' />
 
     </>
   );
