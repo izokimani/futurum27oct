@@ -19,10 +19,13 @@ import PromptbarContext from './PromptBar.context';
 import { PromptbarInitialState, initialState } from './Promptbar.state';
 
 import { v4 as uuidv4 } from 'uuid';
+import { PromptModal } from './components/PromptModal';
+import { GlobalPrompt } from '@/types/globalPrompt';
 
 const Promptbar = () => {
   const { t } = useTranslation('promptbar');
-
+  const [showModal, setShowModal]=useState(false)
+  const [currentPrompt, setCurrentPrompt]=useState<Prompt>()
   const promptBarContextValue = useCreateReducer<PromptbarInitialState>({
     initialState,
   });
@@ -38,6 +41,8 @@ const Promptbar = () => {
       finalGlobalFolder,
     },
     dispatch: homeDispatch,
+    offGlobal,onGlobal,
+
     handleCreateFolder,
   } = useContext(HomeContext);
 
@@ -57,6 +62,7 @@ const Promptbar = () => {
   };
 
   const handleCreatePrompt = () => {
+
     if (defaultModelId) {
       const newPrompt: Prompt = {
         id: uuidv4(),
@@ -67,6 +73,8 @@ const Promptbar = () => {
         folderId: null,
       };
 
+      setCurrentPrompt(newPrompt)
+      setShowModal(true)
       const updatedPrompts = [...prompts, newPrompt];
 
       homeDispatch({ field: 'prompts', value: updatedPrompts });
@@ -135,6 +143,46 @@ const Promptbar = () => {
     }
   }, [searchTerm, prompts, globalPrompts]);
 
+
+  const updatePromptCount=async(updatedPrompt:GlobalPrompt|undefined)=>{
+    const controller = new AbortController();
+    const response = await fetch('/api/updatePrompt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+      body:JSON.stringify(updatedPrompt)
+      
+    });
+  }
+
+  const handleDownload=async()=>{
+
+    let foundObject = globalPrompts.find(obj => obj.id == currentPrompt?.id);
+    if(foundObject){
+      foundObject.downloadCount++;
+    }
+    globalPrompts.sort((a:GlobalPrompt, b:GlobalPrompt) => {
+      const downloadCountA = a.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
+      const downloadCountB = b.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
+    
+      return downloadCountA - downloadCountB;
+    });
+     localStorage.setItem('globalPrompts',JSON.stringify(globalPrompts))
+    homeDispatch({ field: 'globalPrompts', value: [...globalPrompts] });
+
+
+    localStorage.setItem('prompts', JSON.stringify([...prompts,prompt]));
+
+    homeDispatch({ field: 'prompts', value: [...prompts,prompt] });
+    alert("Prompt downloaded successfully.")
+    offGlobal()  
+    await updatePromptCount(foundObject)
+
+
+
+  }
   useEffect(() => {
     if (fillerSearchTerm) {
       if (filterOption === 'created date') {
@@ -201,6 +249,14 @@ const Promptbar = () => {
         handleCreateFolder={() => handleCreateFolder(t('New folder'), 'prompt')}
         handleDrop={handleDrop}
       />
+         {showModal && (
+        <PromptModal
+          prompt={currentPrompt as Prompt}
+          onClose={() => setShowModal(false)}
+          onUpdatePrompt={handleUpdatePrompt}
+          handleDownload={handleDownload}
+        />
+      )}
     </PromptbarContext.Provider>
   );
 };

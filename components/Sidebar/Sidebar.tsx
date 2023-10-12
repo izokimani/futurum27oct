@@ -315,8 +315,8 @@ const Sidebar = <T,>({
                     onClick={() => (isGlobal ? offGlobal() : onGlobal())}
                     style={{ background: 'transparent' }}
                     height={20}
-                    src={lightMode == 'light' ? '/cart.gif' : '/cart.gif'}
-                    alt="gif"
+                    src={lightMode == 'light' ? '/cart.png' : '/cart.png'}
+                    alt="cart"
                   />
                   <span
                     style={{ width: 'max-content' }}

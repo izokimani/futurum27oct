@@ -534,16 +534,19 @@ const defaultOption = options[0];
         borderColor: lightMode=="light" ? "black" : "white",
         marginTop: (selectedConversation && selectedConversation?.messages?.length>0) ? 0 : 350,
       }} 
-      className="px-3 pt-2 pb-3 text-center text-[12px] text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6">
+      className="px-3 pt-2 pb-3 text-center text-[12px] text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6 flex justify-center items-center">
+        <Image loading='eager' src="/beta.png" width={30} height={25} alt="beta_icon"/>
         <a
           href="https://futurum.one/data-privacy/"
           target="_blank"
           rel="noreferrer"
-          className="underline"
+          className="underline ml-1"
         >
           Data Privacy Policy
         </a>
-        .{' '}
+        
+        .{' '}          
+
         {t(
           "Futurum One stores data on your device, is compliant with GDPR, HIPAA, SOC 2 Type 2, and CCPA, and is powered by OpenAI.",
         )}

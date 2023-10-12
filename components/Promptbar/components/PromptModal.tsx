@@ -11,7 +11,7 @@ import { GlobalPrompt } from '@/types/globalPrompt';
 import axios from 'axios';
 import { AuthContext } from '@/contexts/authContext';
 interface Props {
-  prompt: Prompt;
+  prompt: Prompt ;
   onClose: () => void;
   onUpdatePrompt: (prompt: Prompt) => void;
   handleDownload:()=>void
@@ -34,9 +34,9 @@ export const PromptModal: FC<Props> = ({ prompt, onClose, onUpdatePrompt,handleD
     },
     dispatch: homeDispatch,onGlobal, offGlobal
   } = useContext(HomeContext);
-  const [name, setName] = useState(prompt.name);
-  const [description, setDescription] = useState(prompt.description);
-  const [content, setContent] = useState(prompt.content);
+  const [name, setName] = useState(prompt?.name);
+  const [description, setDescription] = useState(prompt?.description);
+  const [content, setContent] = useState(prompt?.content);
   const [globalHappen,setGlobalHappen]=useState(false)
   const modalRef = useRef<HTMLDivElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
