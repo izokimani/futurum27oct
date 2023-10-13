@@ -30,8 +30,8 @@ export const CloseSidebarButton = ({ onClick, side }: Props) => {
         } sm:h-8 sm:w-8 sm:text-neutral-700`}
         onClick={onClick}
       >
-        {side=="left" && <Image loading='eager' src="/history.png" width={20} height={20} alt="burger_icon" /> }
-        {side=="right" && <Image loading='eager' src="/Templates.png" width={20} height={20} alt="burger_icon" /> }
+        {side=="left" && <Image loading='eager' src="/history.png" width={50} height={50} alt="burger_icon" /> }
+        {side=="right" && <Image loading='eager' src="/Templates.png" width={50} height={50} alt="burger_icon" /> }
 
       </button>
       <div
@@ -86,8 +86,8 @@ export const OpenSidebarButton = ({ onClick, side ,handleCreateItem}: Props) => 
     >
       
       {side === 'right' ?
-       (<div style={{display:'flex'}}><IconPlus color='#808080' onClick={()=>{setIsPromptModal(true)}}/>{lightMode?<Image loading='eager' src="/Templates.png" width={20} height={20} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/Templates.png" onClick={onClick} width={20} height={20} alt="burger_icon" />}</div>) :
-       <div style={{display:'flex'}}>{lightMode ?<Image loading='eager' src="/history.png" width={20} height={20} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/history.png"  onClick={onClick} width={20} height={20} alt="burger_icon" />}<IconPlus color='#808080' onClick={()=>{handleCreateItem();selectpromptbar()}}/></div>}
+       (<div style={{display:'flex'}}>{lightMode?<Image loading='eager' src="/Templates.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/Templates.png" onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>) :
+       <div style={{display:'flex'}}>{lightMode ?<Image loading='eager' src="/history.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/history.png"  onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>}
     </button>
     </>
   );
