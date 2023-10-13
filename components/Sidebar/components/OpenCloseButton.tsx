@@ -34,6 +34,7 @@ export const CloseSidebarButton = ({ onClick, side }: Props) => {
         {side=="right" && <Image loading='eager' src="/Templates.png" width={50} height={50} alt="burger_icon" /> }
 
       </button>
+      
       <div
         onClick={onClick}
         className="absolute top-0 left-0 z-10 h-full w-full bg-black opacity-70 sm:hidden"
