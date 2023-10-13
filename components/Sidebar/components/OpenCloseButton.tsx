@@ -82,12 +82,12 @@ export const OpenSidebarButton = ({ onClick, side ,handleCreateItem}: Props) => 
         side === 'right' ? 'right-2' : 'left-2'
       } z-50 h-7 w-7 text-white hover:text-gray-400 dark:text-white dark:hover:text-gray-300 sm:top-0.5 sm:${
         side === 'right' ? 'right-2' : 'left-2'
-      } sm:h-8 sm:w-12 sm:text-neutral-700`}
+      } sm:h-8 sm:w-12 sm:text-neutral-700 ml-4 mr-4 mt-2`}
     >
       
       {side === 'right' ?
        (<div style={{display:'flex'}}>{lightMode?<Image loading='eager' src="/Templates.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/Templates.png" onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>) :
-       <div style={{display:'flex'}}>{lightMode ?<Image loading='eager' src="/history.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/history.png"  onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>}
+       <div style={{display:'flex' }}>{lightMode ?<Image loading='eager' src="/history.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/history.png"  onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>}
     </button>
     </>
   );
