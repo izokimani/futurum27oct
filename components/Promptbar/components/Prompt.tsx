@@ -244,7 +244,6 @@ export const PromptComponent = ({ prompt }: Props) => {
               }}
             >
               <Image
-            loading="eager"
             width={20}
             style={{ background: 'transparent' }}
             height={20}

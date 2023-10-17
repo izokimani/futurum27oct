@@ -535,7 +535,7 @@ const defaultOption = options[0];
         marginTop: (selectedConversation && selectedConversation?.messages?.length>0) ? 0 : 350,
       }} 
       className="px-3 pt-2 pb-3 text-center text-[12px] text-black/50 dark:text-white/50 md:px-4 md:pt-3 md:pb-6 flex justify-center items-center">
-        <Image loading='eager' src="/beta.png" width={30} height={25} alt="beta_icon"/>
+        <Image  src="/beta.png" width={30} height={25} alt="beta_icon"/>
         <a
           href="https://futurum.one/data-privacy/"
           target="_blank"

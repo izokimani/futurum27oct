@@ -487,7 +487,6 @@ const Folder = ({
 
               >
                 <Image
-            loading="eager"
             width={20}
             style={{ background: 'transparent' }}
             height={20}

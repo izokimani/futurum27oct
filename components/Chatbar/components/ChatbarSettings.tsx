@@ -216,7 +216,6 @@ export const ChatbarSettings = () => {
         <SidebarButton
           text={t('Settings')}
           icon={ <Image
-            loading="eager"
             width={20}
             style={{ background: 'transparent' }}
             height={20}

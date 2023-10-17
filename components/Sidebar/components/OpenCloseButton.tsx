@@ -30,8 +30,8 @@ export const CloseSidebarButton = ({ onClick, side }: Props) => {
         } sm:h-8 sm:w-8 sm:text-neutral-700 mt-2`}
         onClick={onClick}
       >
-        {side=="left" && <Image loading='eager' src="/history.png" width={50} height={50} alt="burger_icon" /> }
-        {side=="right" && <Image loading='eager' src="/Templates.png" width={50} height={50} alt="burger_icon" /> }
+        {side=="left" && <Image  src="/history.png" width={50} height={50} alt="burger_icon" /> }
+        {side=="right" && <Image  src="/Templates.png" width={50} height={50} alt="burger_icon" /> }
 
       </button>
       
@@ -87,8 +87,8 @@ export const OpenSidebarButton = ({ onClick, side ,handleCreateItem}: Props) => 
     >
       
       {side === 'right' ?
-       (<div style={{display:'flex'}}>{lightMode?<Image loading='eager' src="/Templates.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/Templates.png" onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>) :
-       <div style={{display:'flex' }}>{lightMode ?<Image loading='eager' src="/history.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image loading='eager' src="/history.png"  onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>}
+       (<div style={{display:'flex'}}>{lightMode?<Image  src="/Templates.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image  src="/Templates.png" onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>) :
+       <div style={{display:'flex' }}>{lightMode ?<Image  src="/history.png" width={50} height={50} onClick={onClick} alt="burger_icon" />:<Image src="/history.png"  onClick={onClick} width={50} height={50} alt="burger_icon" />}</div>}
     </button>
     </>
   );

@@ -310,7 +310,6 @@ const Sidebar = <T,>({
               {side == 'right' && (
                 <div className="group relative">
                   <Image
-                    loading="eager"
                     width={25}
                     onClick={() => (isGlobal ? offGlobal() : onGlobal())}
                     style={{ background: 'transparent' }}
@@ -329,7 +328,6 @@ const Sidebar = <T,>({
               {side == 'right' && (
                 <div className="group relative">
                   <Image
-                    loading="eager"
                     width={20}
                     onClick={() => setShowBox(true)}
                     style={{ background: 'transparent' }}
@@ -370,7 +368,6 @@ const Sidebar = <T,>({
                 >
                   {/* <IconPlus size={16} /> */}
                   <Image
-                    loading="eager"
                     width={20}
                     style={{ background: 'transparent' }}
                     height={20}
@@ -396,7 +393,6 @@ const Sidebar = <T,>({
                     onClick={handleCreateFolder}
                   >
                   <Image
-                    loading="eager"
                     width={20}
                     style={{ background: 'transparent' }}
                     height={20}
@@ -443,7 +439,6 @@ const Sidebar = <T,>({
               >
                 {/* <IconFolderPlus size={16} /> */}
                <Image
-                    loading="eager"
                     width={20}
                     style={{ background: 'transparent' }}
                     height={20}
