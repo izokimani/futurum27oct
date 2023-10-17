@@ -6,7 +6,21 @@ import {
   IconMistOff,
   IconSettings,
   IconSettings2,
+  IconVideo,
 } from '@tabler/icons-react';
+import DemoModal from './DemoModal'
+import {
+  Box,
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
@@ -28,7 +42,7 @@ import axios from 'axios';
 
 export const ChatbarSettings = () => {
   const { signOut } = useClerk();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { t } = useTranslation('sidebar');
   const { user, login, logout } = useContext(AuthContext);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
@@ -105,6 +119,43 @@ export const ChatbarSettings = () => {
       >
         {isOptionOpen && (
           <>
+          {/* //modal */}
+          <Box
+              color={lightMode === 'dark' ? 'white' : 'black'}
+              bg={lightMode === 'dark' ? 'black' : 'white'}
+            >
+              <Modal
+                blockScrollOnMount={false}
+                isOpen={isOpen}
+                size="full"
+                onClose={onClose}
+              >
+                <ModalOverlay />
+                <ModalContent>
+                  {/* <ModalHeader
+                //  bg={lightMode === 'dark' ? 'black' : 'white'}
+                >
+                  Demo
+                </ModalHeader> */}
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <DemoModal theme={lightMode} />
+                  </ModalBody>
+
+                  {/* <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                </ModalFooter> */}
+                </ModalContent>
+              </Modal>
+            </Box>
+            <SidebarButton
+              text={t('Tutorials')}
+              icon={<IconVideo size={18} />}
+              onClick={() => onOpen()}
+              lightMode={lightMode}
+            />
             {conversations.length > 0 ? (
               <ClearConversations
                 onClearConversations={handleClearConversations}
