@@ -6,6 +6,10 @@ import {
   IconRepeat,
   IconSend,
 } from '@tabler/icons-react';
+import { v4 as uuidv4 } from 'uuid';
+import { OpenAIModels } from '@/types/openai';
+
+
 import { SystemPrompt } from './SystemPrompt';
 import FavIcon from "../../components/gif-white.gif";
 import Image from 'next/image';
@@ -33,6 +37,9 @@ import { PluginSelect } from './PluginSelect';
 import { PromptList } from './PromptList';
 import { VariableModal } from './VariableModal';
 import Modal from './Modal';
+import { PromptModal } from '../Promptbar/components/PromptModal';
+import { savePrompts } from '@/utils/app/prompts';
+import { GlobalPrompt } from '../../types/globalPrompt';
 
 interface Props {
   onSend: (message: Message, plugin: Plugin | null) => void;
@@ -54,11 +61,14 @@ export const ChatInput = ({
   const { t } = useTranslation('chat');
 
   const {
-    state: { selectedConversation, messageIsStreaming, prompts, lightMode, showPluginSelect,isAutoHide },
+    state: { selectedConversation, messageIsStreaming, prompts, lightMode, showPluginSelect,isAutoHide,globalPrompts, defaultModelId },
     offPluginSelect,
     onPluginSelect,
+    offGlobal,
     dispatch: homeDispatch,
   } = useContext(HomeContext);
+  const [showModal, setShowModal]=useState(false)
+  const [currentPrompt, setCurrentPrompt]=useState<Prompt>()
 
   const [content, setContent] = useState<string>();
   const [isTyping, setIsTyping] = useState<boolean>(false);
@@ -321,7 +331,83 @@ const defaultOption = options[0];
     };
   }, []);
 
+  const handleUpdatePrompt = (prompt: Prompt) => {
+    const updatedPrompts = prompts.map((p) => {
+      if (p.id === prompt.id) {
+        return prompt;
+      }
+
+      return p;
+    });
+    homeDispatch({ field: 'prompts', value: updatedPrompts });
+
+    savePrompts(updatedPrompts);
+  };
+
+  const handleDownload=async()=>{
+
+    let foundObject = globalPrompts.find(obj => obj.id == currentPrompt?.id);
+    if(foundObject){
+      foundObject.downloadCount++;
+    }
+    globalPrompts.sort((a:GlobalPrompt, b:GlobalPrompt) => {
+      const downloadCountA = a.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
+      const downloadCountB = b.downloadCount || 0; // Default to 0 if downloadCount is missing or falsy
+    
+      return downloadCountA - downloadCountB;
+    });
+     localStorage.setItem('globalPrompts',JSON.stringify(globalPrompts))
+    homeDispatch({ field: 'globalPrompts', value: [...globalPrompts] });
+
+
+    localStorage.setItem('prompts', JSON.stringify([...prompts,prompt]));
+
+    homeDispatch({ field: 'prompts', value: [...prompts,prompt] });
+    alert("Prompt downloaded successfully.")
+    offGlobal()  
+    await updatePromptCount(foundObject)
+
+
+
+  }
+
+  const handleCreatePrompt = () => {
+
+    if (defaultModelId) {
+      const newPrompt: Prompt = {
+        id: uuidv4(),
+        name: `Prompt ${prompts.length + 1}`,
+        description: '',
+        content: '',
+        model: OpenAIModels[defaultModelId],
+        folderId: null,
+      };
+
+      setCurrentPrompt(newPrompt)
+      setShowModal(true)
+      const updatedPrompts = [...prompts, newPrompt];
+
+      homeDispatch({ field: 'prompts', value: updatedPrompts });
+
+      savePrompts(updatedPrompts);
+    }
+  };
+
+  const updatePromptCount=async(updatedPrompt:GlobalPrompt|undefined)=>{
+    const controller = new AbortController();
+    const response = await fetch('/api/updatePrompt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      signal: controller.signal,
+      body:JSON.stringify(updatedPrompt)
+      
+    });
+  }
+
   return (
+    <>
     <div  style={{
       backgroundColor: lightMode=="light" ? "white" : "black",
       color: lightMode=="light" ? "black" : "white",
@@ -349,12 +435,18 @@ const defaultOption = options[0];
           minHeight: '5px',
         }}  className="relative mx-2 flex w-full flex-grow flex-col rounded-md  bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:border-gray-900/50 dark:bg-[#40414F] dark:text-white dark:shadow-[0_0_15px_rgba(0,0,0,0.10)] sm:mx-4">
           <button
-            className="absolute left-2 top-2 rounded-sm p-1 text-neutral-800 opacity-60 hover:bg-neutral-200 hover:text-neutral-900 dark:bg-opacity-50 dark:text-neutral-100 dark:hover:text-neutral-200"
-            onClick={() => showPluginSelect?offPluginSelect():onPluginSelect()}
+            className="absolute left-2 top-2 rounded-sm p-1 text-neutral-800  hover:bg-neutral-200 hover:text-neutral-900  dark:text-neutral-100 dark:hover:text-neutral-200"
+            onClick={() => handleCreatePrompt()}
             onKeyDown={(e) => {}}
           >
-              <Image width={20} style={{background:"transparent"}} height={20} src={lightMode=="light"?"/gif-black.gif":"/gif-white.gif"} alt="My Image" />
-
+              {/* <Image width={20} style={{background:"transparent"}} height={20} src={lightMode=="light"?"/gif-black.gif":"/gif-white.gif"} alt="My Image" /> */}
+              <Image
+                    width={20}
+                    style={{ background: 'transparent' }}
+                    height={20}
+                    src={'/new_template_prompt.png'}
+                    alt="new template prompt"
+                  />  
           </button>
           
 
@@ -552,5 +644,15 @@ const defaultOption = options[0];
         )}
       </div>
     </div>
+    {showModal && (
+        <PromptModal
+          prompt={currentPrompt as Prompt}
+          onClose={() => setShowModal(false)}
+          onUpdatePrompt={handleUpdatePrompt}
+          handleDownload={handleDownload}
+        />
+      )}
+    </>
   );
 };
+
