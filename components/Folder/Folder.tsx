@@ -9,6 +9,7 @@ import {
   IconWorldDownload,
   IconX,
 } from '@tabler/icons-react';
+import Image from 'next/image';
 import {
   KeyboardEvent,
   MouseEventHandler,
@@ -483,8 +484,17 @@ const Folder = ({
                   e.stopPropagation();
                   handleDownload();
                 }}
+
               >
-                <IconWorldDownload size={18} />
+                <Image
+            loading="eager"
+            width={20}
+            style={{ background: 'transparent' }}
+            height={20}
+            src={'/Download_from_marketplace.png'}
+            alt="download icon"
+          /> 
+                {/* <IconWorldDownload size={18} /> */}
               </SidebarActionButton>
             )}
             {!isGlobal && currentFolder.type == 'prompt' && (

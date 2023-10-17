@@ -311,11 +311,11 @@ const Sidebar = <T,>({
                 <div className="group relative">
                   <Image
                     loading="eager"
-                    width={20}
+                    width={25}
                     onClick={() => (isGlobal ? offGlobal() : onGlobal())}
                     style={{ background: 'transparent' }}
-                    height={20}
-                    src={lightMode == 'light' ? '/cart.png' : '/cart.png'}
+                    height={25}
+                    src={'/shopping_cart.png'}
                     alt="cart"
                   />
                   <span
@@ -328,7 +328,15 @@ const Sidebar = <T,>({
               )}
               {side == 'right' && (
                 <div className="group relative">
-                  <IconFileImport
+                  <Image
+                    loading="eager"
+                    width={20}
+                    onClick={() => setShowBox(true)}
+                    style={{ background: 'transparent' }}
+                    height={20}
+                    src={'/import_icon.png'}
+                    alt="import icon"
+                  />                  {/* <IconFileImport
                     onClick={() => {
                       setShowBox(true);
                       // const importFile = document.querySelector(
@@ -339,7 +347,7 @@ const Sidebar = <T,>({
                       // }
                     }}
                     size={18}
-                  />
+                  /> */}
                   <span
                     style={{ width: 'max-content' }}
                     className="absolute top-5 scale-0 transition-all rounded bg-gray-800 p-2  text-white group-hover:scale-100"
@@ -360,7 +368,15 @@ const Sidebar = <T,>({
                     handleSearchTerm('');
                   }}
                 >
-                  <IconPlus size={16} />
+                  {/* <IconPlus size={16} /> */}
+                  <Image
+                    loading="eager"
+                    width={20}
+                    style={{ background: 'transparent' }}
+                    height={20}
+                    src={'/new_template_prompt.png'}
+                    alt="new template prompt"
+                  />    
                   {/* {addItemButtonTitle} */}
                 </button>
                 <span
@@ -379,7 +395,15 @@ const Sidebar = <T,>({
                     className=" flex flex-shrink-0 cursor-pointer items-center gap-3 rounded-md   text-sm text-white transition-colors duration-200 hover:bg-gray-500/10"
                     onClick={handleCreateFolder}
                   >
-                    <IconFolderPlus size={16} />
+                  <Image
+                    loading="eager"
+                    width={20}
+                    style={{ background: 'transparent' }}
+                    height={20}
+                    src={'/add_folder.png'}
+                    alt="add folder"
+                  />   
+                    {/* <IconFolderPlus size={16} /> */}
                   </button>
                   <span
                     style={{ width: 'max-content' }}
@@ -417,7 +441,15 @@ const Sidebar = <T,>({
                 className="ml-2 flex flex-shrink-0 cursor-pointer items-center gap-3 rounded-md  p-3 text-sm text-white transition-colors duration-200 hover:bg-gray-500/10"
                 onClick={handleCreateFolder}
               >
-                <IconFolderPlus size={16} />
+                {/* <IconFolderPlus size={16} /> */}
+               <Image
+                    loading="eager"
+                    width={20}
+                    style={{ background: 'transparent' }}
+                    height={20}
+                    src={'/add_folder.png'}
+                    alt="add folder"
+                  />   
               </button>
               <span
                 style={{ width: 'max-content' }}

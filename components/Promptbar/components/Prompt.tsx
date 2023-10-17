@@ -14,7 +14,7 @@ import {
   useState,
 } from 'react';
 import axios from 'axios';
-
+import Image from 'next/image';
 import { Prompt } from '@/types/prompt';
 
 import SidebarActionButton from '@/components/Buttons/SidebarActionButton';
@@ -243,7 +243,15 @@ export const PromptComponent = ({ prompt }: Props) => {
               
               }}
             >
-              <IconWorldDownload size={18} />
+              <Image
+            loading="eager"
+            width={20}
+            style={{ background: 'transparent' }}
+            height={20}
+            src={'/Download_from_marketplace.png'}
+            alt="download icon"
+          /> 
+              {/* <IconWorldDownload size={18} /> */}
             </SidebarActionButton>}
           {!isGlobal && !prompt.folderId && <SidebarActionButton handleClick={handleMakeGlobal}>
             <IconWorld size={18} />

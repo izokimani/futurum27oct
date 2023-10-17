@@ -8,7 +8,7 @@ import {
   IconSettings2,
 } from '@tabler/icons-react';
 import { useContext, useState } from 'react';
-
+import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 
 import HomeContext from '@/pages/api/home/home.context';
@@ -215,7 +215,14 @@ export const ChatbarSettings = () => {
       >
         <SidebarButton
           text={t('Settings')}
-          icon={<IconSettings size={18} />}
+          icon={ <Image
+            loading="eager"
+            width={20}
+            style={{ background: 'transparent' }}
+            height={20}
+            src={'/settings.png'}
+            alt="settings icon"
+          />   }
           onClick={() => {
             setIsOptionOpen(!isOptionOpen);
             setShowSettings(!showSettings);
